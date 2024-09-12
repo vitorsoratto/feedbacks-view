@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/feedbacks', [FeedbackController::class, 'feedbacks'])->name('feedbacks');
+Route::get('/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks.index');
