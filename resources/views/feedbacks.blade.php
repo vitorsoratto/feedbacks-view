@@ -17,7 +17,7 @@
     <div class="flex flex-col min-h-screen px-4 py-12 bg-gray-800 text-white sm:px-6 lg:px-8">
         <div class="flex flex-col items-center justify-center w-full mb-12">
             <h1 class="text-6xl font-bold">Feedbacks Apps - Koala Mob</h1>
-            <p class="text-2xl">
+            <p class="text-2xl mt-2">
                 {{ $feedbacks->count() }} feedbacks
             </p>
         </div>
