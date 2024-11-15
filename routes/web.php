@@ -7,4 +7,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/feedbacks', [FeedbackController::class, 'index'])->name('feedbacks.index');
+Route::get('feedbacks', [FeedbackController::class, 'index'])->name('feedbacks.index');
+
+require __DIR__.'/auth.php';

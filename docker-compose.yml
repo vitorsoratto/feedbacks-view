@@ -1,34 +1,54 @@
 version: "3.8"
 
 services:
-    php:
-        build:
-            args:
-                user: home
-                uid: 1000
-            context: ./
-            dockerfile: Dockerfile
-        image: feedbackview
-        container_name: feedbackview-app
-        restart: always
-        working_dir: /var/www/
-        volumes:
-            - ./:/var/www
-        networks:
-            - feedbackview
+  php:
+    build:
+      args:
+        user: home
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: feedbackview
+    container_name: feedbackview-app
+    restart: always
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - feedbackview
 
-    nginx:
-        container_name: feedbackview-nginx
-        image: nginx:1.23.1-alpine
-        restart: always
-        volumes:
-            - ./:/var/www
-            - ./docker-compose/nginx/feedbackview.conf:/etc/nginx/conf.d/default.conf
-        ports:
-            - 8000:80
-        networks:
-            - feedbackview
+  db:
+    image: postgres:15.3-alpine
+    container_name: feedbackview-db
+    restart: unless-stopped
+    environment:
+      PGPASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - feedbackview
+
+  nginx:
+    container_name: feedbackview-nginx
+    image: nginx:1.23.1-alpine
+    restart: always
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx/feedbackview.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 8000:80
+    networks:
+      - feedbackview
+
+volumes:
+  pgdata:
+    driver: local
 
 networks:
-    feedbackview:
-        driver: bridge
+  feedbackview:
+    driver: bridge
